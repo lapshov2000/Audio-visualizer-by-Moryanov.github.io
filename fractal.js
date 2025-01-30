@@ -181,6 +181,41 @@ class AudioController {
             this.isPlaying = false;
             this.updatePlayPauseButton();
         };
+
+        // Добавляем обработчик обновления времени
+        this.currentTrack.addEventListener('timeupdate', () => {
+            this.updateTimeDisplay();
+        });
+
+        // Добавляем обработчик изменения прогресса
+        this.progressSlider.addEventListener('input', (e) => {
+            const seekTime = (e.target.value / 100) * this.currentTrack.duration;
+            this.currentTrack.currentTime = seekTime;
+            this.updateTimeDisplay();
+        });
+    }
+
+    updateTimeDisplay() {
+        if (!this.currentTrack) return;
+
+        const currentTime = this.currentTrack.currentTime;
+        const duration = this.currentTrack.duration;
+
+        // Форматируем время в формат MM:SS
+        const formatTime = (time) => {
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time % 60);
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        };
+
+        // Обновляем отображение времени
+        this.currentTimeSpan.textContent = formatTime(currentTime);
+        this.durationSpan.textContent = formatTime(duration);
+
+        // Обновляем прогресс
+        if (duration > 0) {
+            this.progressSlider.value = (currentTime / duration) * 100;
+        }
     }
 
     togglePlayPause() {
