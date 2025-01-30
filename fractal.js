@@ -512,9 +512,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mandelbrotCanvas) {
         new MandelbrotVisualizer();
     } else {
-        console.warn('Элемент mandelbrotCanvas не найден');
+        console.error('Элемент mandelbrotCanvas не найден');
     }
 });
+
 
 function createShaderProgram(gl, vsSource, fsSource) {
     const vertexShader = gl.createShader(gl.VERTEX_SHADER);
