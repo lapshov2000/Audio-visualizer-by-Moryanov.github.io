@@ -232,6 +232,69 @@
             order: -1; /* Перемещаем в начало контейнера */
             margin-bottom: 12px; /* Отступ от следующего элемента */
         }
+
+        .info-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .info-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .info-icon-img {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+        }
+
+        .info-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 80%;
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 15px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .info-popup.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .info-popup h3 {
+            margin: 0 0 15px 0;
+            font-size: 24px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .info-popup p {
+            margin: 0 0 15px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .info-popup strong {
+            color: #fff;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
 </head>
@@ -302,10 +365,43 @@
             <a href="https://t.me/moryanov" target="_blank">
                 <img src="LogoG2raf.png" alt="Logo" class="panel-logo">
             </a>
+            <div class="info-icon" id="infoIcon">
+                <img src="icons8-info-64.png" alt="Info" class="info-icon-img">
+            </div>
             <div class="logo-caption">
                 Made with <a href="https://www.cursor.com/" target="_blank" class="cursor-link">Cursor</a>
             </div>
         </div>
+    </div>
+
+    <!-- Добавляем блок с описанием -->
+    <div class="info-popup" id="infoPopup">
+        <h3>Fractal Music Visualizer</h3>
+        <p><strong>Описание проекта:</strong><br>
+        Я разработал музыкальный визуализатор на основе фракталов с использованием Deepseek. Интересно, что я не написал ни одной строчки кода самостоятельно, но успешно разместил проект на GitHub для онлайн-доступа.</p>
+        <p><strong>Основные функции:</strong><br>
+        - Визуализация музыки через микрофон<br>
+        - Поддержка локальных аудиофайлов<br>
+        - Настройка параметров визуализации<br>
+        - Адаптивный интерфейс</p>
+        <p><strong>Особенности:</strong><br>
+        - Лучше всего работает на компьютере<br>
+        - Поддерживает мобильные устройства (с ограниченной функциональностью)<br>
+        - Интерактивные элементы управления<br>
+        - Красивые фрактальные эффекты, синхронизированные с музыкой</p>
+        <p><strong>Как использовать:</strong><br>
+        1. Откройте визуализатор в браузере<br>
+        2. Выберите источник звука (микрофон или файл)<br>
+        3. Настройте параметры по своему вкусу<br>
+        4. Наслаждайтесь визуализацией!</p>
+        <p><strong>Технологии:</strong><br>
+        - WebGL для рендеринга фракталов<br>
+        - Web Audio API для обработки звука<br>
+        - Современный JavaScript и CSS</p>
+        <p><strong>Разработка:</strong><br>
+        Проект был создан с помощью Cursor, который отлично справился с задачей. Все компоненты работают стабильно и эффективно.</p>
+        <p><strong>Версия:</strong><br>
+        <span id="versionInfo"></span></p>
     </div>
 
     <script>

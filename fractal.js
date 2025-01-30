@@ -488,6 +488,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     draw();
+
+    const infoIcon = document.getElementById('infoIcon');
+    const infoPopup = document.getElementById('infoPopup');
+
+    infoIcon.addEventListener('mouseenter', () => {
+        infoPopup.classList.add('visible');
+    });
+
+    infoIcon.addEventListener('mouseleave', () => {
+        infoPopup.classList.remove('visible');
+    });
+
+    infoPopup.addEventListener('mouseenter', () => {
+        infoPopup.classList.add('visible');
+    });
+
+    infoPopup.addEventListener('mouseleave', () => {
+        infoPopup.classList.remove('visible');
+    });
+
+    // Загрузка содержимого Version.txt
+    fetch('Version.txt')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка загрузки файла: ' + response.statusText);
+            }
+            return response.text();
+        })
+        .then(data => {
+            const versionInfo = document.getElementById('versionInfo');
+            if (versionInfo) {
+                // Заменяем переносы строк на <br> и вставляем в HTML
+                versionInfo.innerHTML = data.replace(/\n/g, '<br>');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка загрузки Version.txt:', error);
+            // В случае ошибки покажем сообщение в блоке версии
+            const versionInfo = document.getElementById('versionInfo');
+            if (versionInfo) {
+                versionInfo.textContent = 'Ошибка загрузки информации о версии.';
+            }
+        });
+
+    const mandelbrotCanvas = document.getElementById('mandelbrotCanvas');
+    if (mandelbrotCanvas) {
+        new MandelbrotVisualizer();
+    } else {
+        console.warn('Элемент mandelbrotCanvas не найден');
+    }
 });
 
 function createShaderProgram(gl, vsSource, fsSource) {
@@ -648,8 +698,4 @@ class MandelbrotVisualizer {
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
     }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    new MandelbrotVisualizer();
-});
 

@@ -1,0 +1,8 @@
+Version 2.0
+Release Date: 2025-01-30
+Build Number: 
+Changelog:
+- Initial release
+- Added fractal visualization
+- Added audio controls
+- Added system audio support 
