@@ -1,0 +1,267 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #000;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    cursor: none;
+}
+
+#audioControls {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#audioControls {
+    position: fixed;
+    bottom: -170px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: bottom 0.3s ease;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 15px #8a2be2,
+        0 0 20px #8a2be2;
+    backdrop-filter: blur(5px);
+}
+
+#audioControls:hover {
+    bottom: 0;
+}
+
+#audioControls:not(:hover) {
+    bottom: -170px;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+}
+
+.slider-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.slider-container::before,
+.slider-container::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 100%;
+    pointer-events: none;
+}
+
+.slider-container::before {
+    left: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,0.5), transparent);
+}
+
+.slider-container::after {
+    right: 0;
+    background: linear-gradient(-90deg, rgba(0,0,0,0.5), transparent);
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    height: 5px;
+    box-shadow: 
+        0 0 2px #fff,
+        0 0 4px #fff,
+        0 0 6px #8a2be2,
+        0 0 8px #8a2be2;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    box-shadow: 
+        0 0 2px #fff,
+        0 0 4px #fff,
+        0 0 6px #8a2be2,
+        0 0 8px #8a2be2;
+}
+
+button:hover {
+    background: #666;
+}
+
+button.active {
+    background: #0a84ff;
+}
+
+#audioSource {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+#currentTime {
+    min-width: 60px;
+    text-align: right;
+    color: white;
+}
+
+.handle {
+    width: 50px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    margin: 0 auto 15px;
+}
+
+/* Добавляем новые стили для дополнительных контролов */
+.effect-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.effect-control {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+}
+
+.effect-control span {
+    min-width: 80px;
+    font-size: 0.9em;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: center;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.player-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background 0.2s;
+}
+
+.player-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.player-button.active {
+    background: rgba(138, 43, 226, 0.4);
+    box-shadow: 
+        0 0 5px #fff,
+        0 0 10px #8a2be2;
+}
+
+.player-button:disabled,
+input[type="range"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.time-display {
+    color: white;
+    font-family: monospace;
+    min-width: 60px;
+    text-align: center;
+}
+
+/* Стили для текста */
+#audioControls, #audioControls * {
+    color: white;
+    text-shadow: 
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 15px #8a2be2,
+        0 0 20px #8a2be2;
+}
+
+.progress-container {
+    width: 100%;
+    padding: 0 20px;
+}
+
+input[type="range"]#progress {
+    width: 100%;
+}
+
+/* Группируем кнопки управления и выбора источника */
+.control-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: center;
+}
+
+.logo {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.logo img {
+    width: 100px; /* Adjust size as needed */
+    height: auto;
+} 
