@@ -508,30 +508,6 @@ document.addEventListener('DOMContentLoaded', () => {
         infoPopup.classList.remove('visible');
     });
 
-    // Загрузка содержимого Version.txt
-    fetch('Version.txt')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Ошибка загрузки файла: ' + response.statusText);
-            }
-            return response.text();
-        })
-        .then(data => {
-            const versionInfo = document.getElementById('versionInfo');
-            if (versionInfo) {
-                // Заменяем переносы строк на <br> и вставляем в HTML
-                versionInfo.innerHTML = data.replace(/\n/g, '<br>');
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка загрузки Version.txt:', error);
-            // В случае ошибки покажем сообщение в блоке версии
-            const versionInfo = document.getElementById('versionInfo');
-            if (versionInfo) {
-                versionInfo.textContent = 'Ошибка загрузки информации о версии.';
-            }
-        });
-
     const mandelbrotCanvas = document.getElementById('mandelbrotCanvas');
     if (mandelbrotCanvas) {
         new MandelbrotVisualizer();

@@ -295,6 +295,45 @@
         .info-popup strong {
             color: #fff;
         }
+
+        .info-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1002;
+        }
+
+        .info-tooltip.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .info-tooltip h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .info-tooltip p {
+            margin: 0 0 10px 0;
+            font-size: 12px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .info-tooltip strong {
+            color: #fff;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
 </head>
@@ -367,6 +406,32 @@
             </a>
             <div class="info-icon" id="infoIcon">
                 <img src="icons8-info-64.png" alt="Info" class="info-icon-img">
+                <div class="info-tooltip">
+                    <h3>Fractal Music Visualizer</h3>
+                    <p><strong>Описание проекта:</strong><br>
+                    Я разработал музыкальный визуализатор на основе фракталов с использованием Deepseek. Интересно, что я не написал ни одной строчки кода самостоятельно, но успешно разместил проект на GitHub для онлайн-доступа.</p>
+                    <p><strong>Основные функции:</strong><br>
+                    - Визуализация музыки через микрофон<br>
+                    - Поддержка локальных аудиофайлов<br>
+                    - Настройка параметров визуализации<br>
+                    - Адаптивный интерфейс</p>
+                    <p><strong>Особенности:</strong><br>
+                    - Лучше всего работает на компьютере<br>
+                    - Поддерживает мобильные устройства (с ограниченной функциональностью)<br>
+                    - Интерактивные элементы управления<br>
+                    - Красивые фрактальные эффекты, синхронизированные с музыкой</p>
+                    <p><strong>Как использовать:</strong><br>
+                    1. Откройте визуализатор в браузере<br>
+                    2. Выберите источник звука (микрофон или файл)<br>
+                    3. Настройте параметры по своему вкусу<br>
+                    4. Наслаждайтесь визуализацией!</p>
+                    <p><strong>Технологии:</strong><br>
+                    - WebGL для рендеринга фракталов<br>
+                    - Web Audio API для обработки звука<br>
+                    - Современный JavaScript и CSS</p>
+                    <p><strong>Разработка:</strong><br>
+                    Проект был создан с помощью Cursor, который отлично справился с задачей. Все компоненты работают стабильно и эффективно.</p>
+                </div>
             </div>
             <div class="logo-caption">
                 Made with <a href="https://www.cursor.com/" target="_blank" class="cursor-link">Cursor</a>
@@ -400,8 +465,6 @@
         - Современный JavaScript и CSS</p>
         <p><strong>Разработка:</strong><br>
         Проект был создан с помощью Cursor, который отлично справился с задачей. Все компоненты работают стабильно и эффективно.</p>
-        <p><strong>Версия:</strong><br>
-        <span id="versionInfo"></span></p>
     </div>
 
     <script>
