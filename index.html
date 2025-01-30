@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio visualizer by Moryanov</title>
+    <link rel="icon" type="image/x-icon" href="LogoG2raf.ico">
     <style>
         body, html {
             margin: 0;
@@ -289,7 +290,10 @@
             <div class="controls-row">
                 <div class="slider-group">
                     <span class="slider-label">Volume</span>
-                    <input type="range" id="volume" min="0" max="100" value="70">
+                    <div class="slider-with-value">
+                        <input type="range" id="volume" min="0" max="100" value="70">
+                        <span id="volumeValue" class="value-display">70%</span>
+                    </div>
                 </div>
             </div>
         </div>

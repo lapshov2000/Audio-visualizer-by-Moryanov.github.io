@@ -251,6 +251,37 @@ input[type="range"]#progress {
     align-items: center;
     gap: 15px;
     justify-content: center;
+    width: 100%;
+}
+
+#systemAudio, #fileAudio {
+    padding: 10px 20px;
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    border-radius: 25px;
+    background: rgba(138, 43, 226, 0.1);
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px rgba(138, 43, 226, 0.5);
+}
+
+#systemAudio:hover, #fileAudio:hover {
+    background: rgba(138, 43, 226, 0.3);
+    box-shadow: 
+        0 0 5px #fff,
+        0 0 10px #8a2be2,
+        0 0 20px #8a2be2;
+    border-color: rgba(138, 43, 226, 0.7);
+    transform: scale(1.05);
+}
+
+#systemAudio.active, #fileAudio.active {
+    background: rgba(138, 43, 226, 0.5);
+    box-shadow: 
+        0 0 10px #fff,
+        0 0 20px #8a2be2,
+        0 0 30px #8a2be2;
 }
 
 .logo {

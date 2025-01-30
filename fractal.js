@@ -9,8 +9,6 @@ class AudioController {
         this.isPlaying = false;
         this.gainNode = null;
         this.analyser = null;
-        this.globalAudioElement = new Audio();
-        this.globalAudioElement.muted = false;
         
         window.addEventListener('DOMContentLoaded', () => {
             this.initializeElements();
@@ -42,7 +40,10 @@ class AudioController {
             }
         };
         this.playPauseBtn.onclick = () => this.togglePlayPause();
-        this.volumeSlider.oninput = (e) => this.setVolume(e.target.value);
+        this.volumeSlider.oninput = (e) => {
+            this.setVolume(e.target.value);
+            document.getElementById('volumeValue').textContent = `${e.target.value}%`;
+        };
         this.progressSlider.oninput = (e) => this.seek(e.target.value);
     }
 
@@ -80,8 +81,13 @@ class AudioController {
         try {
             await this.initializeAudioContext();
             
-            document.querySelectorAll('audio, video').forEach(media => media.muted = true);
-            this.globalAudioElement.muted = true;
+            if (this.currentTrack) {
+                this.currentTrack.pause();
+                this.currentTrack.muted = true;
+                this.currentTrack = null;
+                this.isPlaying = false;
+                this.updatePlayPauseButton();
+            }
 
             if (this.microphoneStream) {
                 if (this.currentSource) {
@@ -107,6 +113,15 @@ class AudioController {
             this.systemAudioBtn.classList.add('active');
             this.fileAudioBtn.classList.remove('active');
             this.disablePlayerControls(true);
+
+            // Устанавливаем громкость на 0% для System Audio
+            this.setVolume(0);
+            this.volumeSlider.value = 0;
+            document.getElementById('volumeValue').textContent = '0%';
+
+            // Скрываем слайдер громкости и его заголовок
+            this.volumeSlider.parentElement.style.display = 'none';
+            document.querySelector('.slider-group:has(#volume)').style.display = 'none';
         } catch (error) {
             console.error('Ошибка доступа к системному аудио:', error);
         }
@@ -116,16 +131,13 @@ class AudioController {
         try {
             await this.initializeAudioContext();
             
-            document.querySelectorAll('audio, video').forEach(media => media.muted = false);
-            this.globalAudioElement.muted = false;
-
             if (this.currentSource) {
                 this.currentSource.disconnect();
             }
             
             if (this.currentTrack) {
                 this.currentTrack.pause();
-                this.currentTrack.muted = false;
+                this.currentTrack.muted = true;
                 URL.revokeObjectURL(this.currentTrack.src);
             }
 
@@ -140,7 +152,6 @@ class AudioController {
             this.currentTrack = new Audio();
             this.currentTrack.src = URL.createObjectURL(file);
             this.currentTrack.crossOrigin = "anonymous";
-            this.currentTrack.muted = false;
 
             await new Promise((resolve) => {
                 this.currentTrack.addEventListener('canplay', resolve, { once: true });
@@ -157,6 +168,18 @@ class AudioController {
 
             this.setupAudioEventListeners();
             this.play();
+
+            // Устанавливаем громкость на 50% для File Audio
+            this.setVolume(50);
+            this.volumeSlider.value = 50;
+            document.getElementById('volumeValue').textContent = '50%';
+
+            // Показываем слайдер громкости и его заголовок
+            this.volumeSlider.parentElement.style.display = 'flex';
+            document.querySelector('.slider-group:has(#volume)').style.display = 'flex';
+
+            // Обновляем отображение длительности трека
+            this.durationSpan.textContent = this.formatTime(this.currentTrack.duration);
         } catch (error) {
             console.error('Ошибка при загрузке аудио файла:', error);
         }
@@ -181,41 +204,6 @@ class AudioController {
             this.isPlaying = false;
             this.updatePlayPauseButton();
         };
-
-        // Добавляем обработчик обновления времени
-        this.currentTrack.addEventListener('timeupdate', () => {
-            this.updateTimeDisplay();
-        });
-
-        // Добавляем обработчик изменения прогресса
-        this.progressSlider.addEventListener('input', (e) => {
-            const seekTime = (e.target.value / 100) * this.currentTrack.duration;
-            this.currentTrack.currentTime = seekTime;
-            this.updateTimeDisplay();
-        });
-    }
-
-    updateTimeDisplay() {
-        if (!this.currentTrack) return;
-
-        const currentTime = this.currentTrack.currentTime;
-        const duration = this.currentTrack.duration;
-
-        // Форматируем время в формат MM:SS
-        const formatTime = (time) => {
-            const minutes = Math.floor(time / 60);
-            const seconds = Math.floor(time % 60);
-            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        };
-
-        // Обновляем отображение времени
-        this.currentTimeSpan.textContent = formatTime(currentTime);
-        this.durationSpan.textContent = formatTime(duration);
-
-        // Обновляем прогресс
-        if (duration > 0) {
-            this.progressSlider.value = (currentTime / duration) * 100;
-        }
     }
 
     togglePlayPause() {
@@ -284,13 +272,6 @@ class AudioController {
             mid: mid / 255,
             treble: treble / 255
         };
-    }
-
-    playSound(url) {
-        if (this.isSystemAudio) return;
-        
-        this.globalAudioElement.src = url;
-        this.globalAudioElement.play().catch(console.error);
     }
 }
 
